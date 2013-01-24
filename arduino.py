@@ -10,19 +10,18 @@ s = scratch.Scratch()
 s.connect()
 
 while(True):
-	ftp = FTP(server)
-	ftp.login(username, password)
-	f = open("arduino.txt", 'w+')
 	a = s.receive()
 	d = a[1]
 	if 'degF' in d:
+		ftp = FTP(server)
+		ftp.login(username, password)
 		t = d['degF']
+		f = open("arduino.txt", "w")
 		f.write(str(t))
+		f.close()
 		f1 = open("arduino.txt", "rb")
-		ftp.storbinary("STOR weather.txt", f1)
+		ftp.storbinary("STOR arduino.txt", f1)
 		f1.close()
-	else:
-		pass
-	f.close()
-	ftp.quit()
-	time.sleep(1)
+		ftp.quit()
+		print t
+	time.sleep(5)
